@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Lights Out Game</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+
+  .game-board {
+    display: grid;
+    grid-template-columns: repeat(5, 50px);
+    grid-gap: 5px;
+  }
+
+  .cell {
+    width: 50px;
+    height: 50px;
+    background-color: grey; /* Off state color changed to grey */
+    cursor: pointer;
+  }
+
+  .cell.on {
+    background-color: yellow; /* On state color changed to yellow */
+  }
+</style>
+</head>
+<body>
+<h1>Lights Out Game</h1>
+<div id="gameBoard" class="game-board">
+  <!-- The game cells will be added by JavaScript -->
+</div>
+<button onclick="initializeGame()">Reset Game</button>
+
+<script>
+  const rows = 4;
+  const cols = 5;
+  let gameBoard = document.getElementById('gameBoard');
+
+  function initializeGame() {
+    gameBoard.innerHTML = ''; // Clear the board
+    for (let i = 0; i < rows; i++) {
+      for (let j = 0; j < cols; j++) {
+        const cell = document.createElement('div');
+        cell.className = 'cell';
+        cell.addEventListener('click', () => toggleLights(i, j));
+        if (Math.random() > 0.5) cell.classList.add('on'); // Randomly turn some lights on
+        gameBoard.appendChild(cell);
+      }
+    }
+  }
+
+  function toggleLights(row, col) {
+    const toggle = (r, c) => {
+      if (r >= 0 && r < rows && c >= 0 && c < cols) {
+        const cell = gameBoard.children[r * cols + c];
+        cell.classList.toggle('on');
+      }
+    };
+
+    toggle(row, col); // Toggle clicked cell
+    toggle(row - 1, col); // Toggle above
+    toggle(row + 1, col); // Toggle below
+    toggle(row, col - 1); // Toggle left
+    toggle(row, col + 1); // Toggle right
+  }
+
+  initializeGame(); // Start the game
+</script>
+</body>
+</html>
